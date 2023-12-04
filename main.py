@@ -11,9 +11,7 @@ conditions = [
     (df["code3"] == "YLD"),
 ]
 bitCodeOne = (df["bitCode"] == 1).astype(object)
-mask_one = bitCodeOne == True
 bitCodeZero = (df["bitCode"] == 0).astype(object)
-mask_zero = bitCodeZero == True
-bitCodeOne[mask_one] = np.select(conditions, ["A", "B", "BpA"], default=np.nan)
-bitCodeZero[mask_zero] = np.select(conditions, ["H", "T", "TpH"], default=np.nan)
+bitCodeOne[bitCodeOne] = np.select(conditions, ["A", "B", "BpA"], default=np.nan)
+bitCodeZero[bitCodeZero] = np.select(conditions, ["H", "T", "TpH"], default=np.nan)
 df["siCode"] = np.where(df["bitCode"] == 1, bitCodeOne, bitCodeZero)
