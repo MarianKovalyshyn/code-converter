@@ -20,10 +20,9 @@ bitCodeZero[bitCodeZero] = np.select(
 )
 df["siCode"] = np.where(df["bitCode"] == 1, bitCodeOne, bitCodeZero)
 
+unique_combinations = df[["code1", "code2", "source"]].drop_duplicates()
 possible_requests = (
-    df[["code1", "code2", "source"]]
-    .drop_duplicates()
-    .groupby(["code1", "code2"])["source"]
+    unique_combinations.groupby(["code1", "code2"])["source"]
     .agg(list)
     .reset_index()
 )
@@ -33,4 +32,22 @@ sources_for_requests = dict(
         possible_requests["source"],
     )
 )
-print(len(sources_for_requests))
+
+data_for_requests = dict(
+    zip(
+        zip(
+            unique_combinations["code1"],
+            unique_combinations["code2"],
+            unique_combinations["source"],
+        ),
+        zip(
+            df["updateDate"],
+            df["code1"],
+            df["code2"],
+            df["code3"],
+            df["value"],
+            df["siCode"],
+            df["bitCode"],
+        ),
+    )
+)
