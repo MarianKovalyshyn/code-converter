@@ -20,34 +20,19 @@ bitCodeZero[bitCodeZero] = np.select(
 )
 df["siCode"] = np.where(df["bitCode"] == 1, bitCodeOne, bitCodeZero)
 
-unique_combinations = df[["code1", "code2", "source"]].drop_duplicates()
-possible_requests = (
-    unique_combinations.groupby(["code1", "code2"])["source"]
-    .agg(list)
-    .reset_index()
-)
-sources_for_requests = dict(
-    zip(
-        zip(possible_requests["code1"], possible_requests["code2"]),
-        possible_requests["source"],
-    )
-)
+pd.set_option("display.max_rows", None)  # for better display
+request = {"code1": "shA", "code2": "W"}  # for testing requests
 
-data_for_requests = dict(
-    zip(
-        zip(
-            unique_combinations["code1"],
-            unique_combinations["code2"],
-            unique_combinations["source"],
-        ),
-        zip(
-            df["updateDate"],
-            df["code1"],
-            df["code2"],
-            df["code3"],
-            df["value"],
-            df["siCode"],
-            df["bitCode"],
-        ),
-    )
+code1_mask = df["code1"].str.startswith(request["code1"], na=False)
+code2_mask = df["code2"].str.startswith(request["code2"], na=False)
+df_copy_with_general_codes = df[code1_mask & code2_mask]
+df_copy_with_general_codes.loc[:, "code1"] = request["code1"]
+df_copy_with_general_codes.loc[:, "code2"] = request["code2"]
+df_copy_with_general_codes = df_copy_with_general_codes[
+    ["code1", "code2", "source"]
+].drop_duplicates()
+grouped_df_copy = (
+    df_copy_with_general_codes.groupby(["code1", "code2"])["source"]
+    .agg(list)
+    .to_dict()
 )
