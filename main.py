@@ -49,7 +49,9 @@ def group_codes_with_sources(df: pd.DataFrame, request: dict) -> dict:
     return grouped_df_copy
 
 
-def get_values_for_sources(df: pd.DataFrame, sources: list, request: dict) -> list:
+def get_values_for_sources(
+    df: pd.DataFrame, sources: list, request: dict
+) -> list:
     code1_mask, code2_mask = get_code_masks(df, request)
     result = []
 
@@ -76,7 +78,9 @@ def main() -> None:
     df = add_bitcode_column(df)
     df = add_sicode_column(df)
     grouped_df = group_codes_with_sources(df, sample_request)
-    result = get_values_for_sources(df, list(grouped_df.values())[0], sample_request)
+    result = get_values_for_sources(
+        df, list(grouped_df.values())[0], sample_request
+    )
 
     print("First output\n", grouped_df)
     print("\nSecond output")
