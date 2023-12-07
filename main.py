@@ -13,15 +13,15 @@ def add_sicode_column(df: pd.DataFrame) -> pd.DataFrame:
         (df["code3"] == "PRD"),
         (df["code3"] == "YLD"),
     ]
-    bitCodeOne = (df["bitCode"] == 1).astype(object)
-    bitCodeZero = (df["bitCode"] == 0).astype(object)
-    bitCodeOne[bitCodeOne] = np.select(
+    bit_code_one = (df["bitCode"] == 1).astype(object)
+    bit_code_zero = (df["bitCode"] == 0).astype(object)
+    bit_code_one[bit_code_one] = np.select(
         conditions, ["A", "B", "BpA"], default=np.nan
     )
-    bitCodeZero[bitCodeZero] = np.select(
+    bit_code_zero[bit_code_zero] = np.select(
         conditions, ["H", "T", "TpH"], default=np.nan
     )
-    df["siCode"] = np.where(df["bitCode"] == 1, bitCodeOne, bitCodeZero)
+    df["siCode"] = np.where(df["bitCode"] == 1, bit_code_one, bit_code_zero)
     return df
 
 
