@@ -21,7 +21,7 @@ bitCodeZero[bitCodeZero] = np.select(
 df["siCode"] = np.where(df["bitCode"] == 1, bitCodeOne, bitCodeZero)
 
 pd.set_option("display.max_rows", None)  # for better display
-request = {"code1": "shA", "code2": "W"}  # for testing requests
+request = {"code1": "shC", "code2": "C"}  # for testing requests
 
 code1_mask = df["code1"].str.startswith(request["code1"], na=False)
 code2_mask = df["code2"].str.startswith(request["code2"], na=False)
@@ -36,3 +36,23 @@ grouped_df_copy = (
     .agg(list)
     .to_dict()
 )
+
+result = []
+sources = list(grouped_df_copy.values())[0]
+for source in sources:
+    source_mask = df["source"] == source
+    suitable_data = df[code1_mask & code2_mask & source_mask][
+        ["updateDate", "code1", "code2", "code3", "value", "siCode"]
+    ]
+    result.append(
+        {
+            (
+                request["code1"],
+                request["code2"],
+                source,
+            ): suitable_data.values.tolist()
+        }
+    )
+
+for item in result:
+    print(item)
