@@ -83,7 +83,6 @@ def main(sample_request: dict[str, str], file_name: str) -> None:
 
     print("First output\n", grouped_df)
     print("\nSecond output")
-    print("hello")
 
     for data_for_source in result:
         print(data_for_source)
