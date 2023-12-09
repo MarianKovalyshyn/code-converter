@@ -72,9 +72,8 @@ def get_values_for_sources(
     return result
 
 
-def main() -> None:
-    sample_request = {"code1": "shC", "code2": "C"}
-    df = pd.read_csv("db_table.csv")
+def main(sample_request: dict[str, str], file_name: str) -> None:
+    df = pd.read_csv(file_name)
     df = add_bitcode_column(df)
     df = add_sicode_column(df)
     grouped_df = group_codes_with_sources(df, sample_request)
@@ -84,10 +83,11 @@ def main() -> None:
 
     print("First output\n", grouped_df)
     print("\nSecond output")
+    print("hello")
 
     for data_for_source in result:
         print(data_for_source)
 
 
 if __name__ == "__main__":
-    main()
+    main({"code1": "shC", "code2": "C"}, "db_table.csv")
