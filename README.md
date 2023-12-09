@@ -62,4 +62,4 @@ python main.py
 ```
 
 This will print the two outputs for a sample request
-(you can change the request in the `sample_request` variable)
+(you can change the request and file name in arguments of `main` function)
